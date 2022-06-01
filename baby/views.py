@@ -10,7 +10,7 @@ class AlbumViewset(viewsets.ModelViewSet):
 
 
     
-class VaccineViewset(viewsets.ModelViewSet):
+class VaccineViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     queryset = Vaccine.objects.all()
     serializer_class = VaccineSerializer
