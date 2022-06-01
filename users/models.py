@@ -57,7 +57,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Baby(models.Model):
     name= models.CharField(max_length=255)
-    img = models.ImageField(upload_to='imgs/%Y/%m/%d/' , blank= True ,  max_length=255) 
+    img = models.ImageField(upload_to='uploads/%Y/%m/%d/' , blank= True ,  max_length=255) 
     birthdate= models.DateField()
     weight = models.FloatField()
     height=models.FloatField()

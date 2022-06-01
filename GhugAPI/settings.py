@@ -29,11 +29,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY", "foo")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(env("DEBUG", default=False))
+#DEBUG = bool(env("DEBUG", default=False))
 
-
-ALLOWED_HOSTS = ['*']
-
+DEBUG = TRUE
+ALLOWED_HOSTS = ['https://test-ghug.azurewebsites.net','test-ghug.azurewebsites.net', 'localhost', '127.0.0.1']
+#ALLOWED_HOSTS=['*']
+CSRF_TRUSTED_ORIGINS = ['https://test-ghug.azurewebsites.net']
 # Application definition
 
 INSTALLED_APPS = [
@@ -136,10 +137,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+
+MEDIA_ROOT=str(BASE_DIR.joinpath('uploads'))
+MEDIA_URL = '/uploads/'
+
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))] 
 STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
 STATICFILES_STORAGE ='whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -156,13 +162,13 @@ REST_FRAMEWORK = {
 ],
 'DEFAULT_AUTHENTICATION_CLASSES': [ 
 'rest_framework_simplejwt.authentication.JWTAuthentication',
-#'rest_framework.authentication.SessionAuthentication',
+'rest_framework.authentication.SessionAuthentication',
 ],
 }
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10080),
+    'ACCESS_TOKEN_LIFETIME': timedelta( days= 40),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=100),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
