@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'news.apps.NewsConfig',
     'reminders.apps.RemindersConfig',
     'baby.apps.BabyConfig',
+    'crymodel.apps.CrymodelConfig',
 ]
 AUTH_USER_MODEL = 'users.CustomUser' 
 
