@@ -16,10 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path ,include
 from .router import router
-from rest_framework_simplejwt.views import (
-    #TokenObtainPairView,
-    TokenRefreshView,
-)
 
 
 
@@ -28,6 +24,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('users/', include('users.urls')),
-    
    
 ]

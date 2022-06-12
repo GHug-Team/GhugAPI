@@ -15,7 +15,7 @@ import os
 from datetime import timedelta
 from environs import Env
 import dj_database_url
-
+#from rest_framework.settings import api_settings
 env = Env() 
 env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,7 +31,7 @@ SECRET_KEY = env("SECRET_KEY", "foo")
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = bool(env("DEBUG", default=False))
 
-DEBUG = TRUE
+DEBUG = False
 ALLOWED_HOSTS = ['https://test-ghug.azurewebsites.net','test-ghug.azurewebsites.net', 'localhost', '127.0.0.1']
 #ALLOWED_HOSTS=['*']
 CSRF_TRUSTED_ORIGINS = ['https://test-ghug.azurewebsites.net']
@@ -49,14 +49,14 @@ INSTALLED_APPS = [
     #3rd-party-apps
     'rest_framework',
     'corsheaders',
-    'rest_framework_simplejwt.token_blacklist',
+    #'rest_framework_simplejwt.token_blacklist',
+    'knox',
     
     #local apps
     'users.apps.UsersConfig',
     'news.apps.NewsConfig',
     'reminders.apps.RemindersConfig',
     'baby.apps.BabyConfig',
-    'crymodel.apps.CrymodelConfig',
 ]
 AUTH_USER_MODEL = 'users.CustomUser' 
 
@@ -162,12 +162,26 @@ REST_FRAMEWORK = {
 'rest_framework.permissions.AllowAny',
 ],
 'DEFAULT_AUTHENTICATION_CLASSES': [ 
-'rest_framework_simplejwt.authentication.JWTAuthentication',
+#'rest_framework_simplejwt.authentication.JWTAuthentication',
+'knox.auth.TokenAuthentication',
 'rest_framework.authentication.SessionAuthentication',
 ],
 }
 
+#MODELS = str(BASE_DIR.joinpath('ML/models'))
 
+REST_KNOX = {
+  'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
+  'AUTH_TOKEN_CHARACTER_LENGTH': 64,
+  'TOKEN_TTL': timedelta(days=1000),
+  'USER_SERIALIZER': 'knox.serializers.UserSerializer',
+  'TOKEN_LIMIT_PER_USER': None,
+  'AUTO_REFRESH': False,
+  #'EXPIRY_DATETIME_FORMAT': api_settings.DATETME_FORMAT,
+}
+
+
+"""
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta( days= 40),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=100),
@@ -182,6 +196,4 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
-
-
-
+"""

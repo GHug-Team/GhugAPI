@@ -26,6 +26,9 @@ class CustomAccountManager(BaseUserManager):
 
         if not email:
             raise ValueError(_('You must provide an email address'))
+        
+        if not user_name:
+            raise ValueError('Users must have a username')
 
         email = self.normalize_email(email)
         user = self.model(email=email, user_name=user_name, **other_fields)
@@ -37,7 +40,7 @@ class CustomAccountManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_('email address'), unique=True)
-    user_name = models.CharField(max_length=150, unique=True)
+    user_name = models.CharField(max_length=150, unique=False)
     first_name = models.CharField(max_length=150, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
@@ -49,7 +52,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['user_name', ]
 
     def __str__(self):
-        return self.user_name
+        return self.email
 
  
 

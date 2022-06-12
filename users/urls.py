@@ -1,12 +1,11 @@
 
 from rest_framework import routers
 from .views import  BabyViewset
-from django.urls import path
-from .views import CreateCustomUser, BlacklistTokenUpdateView , MyTokenObtainPairView
-from rest_framework_simplejwt.views import (
-    #TokenObtainPairView,
-    TokenRefreshView,
-)
+from django.urls import path , include
+from .views import RegisterAPI, LoginAPI 
+from knox import views as knox_views
+
+
 
 
 router = routers.DefaultRouter()
@@ -17,8 +16,9 @@ router.register('api/babyinfo', BabyViewset)
 app_name = 'users'
 
 urlpatterns = [
-    path('register/', CreateCustomUser.as_view(), name="create_user"),
-    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('logout/blacklist/', BlacklistTokenUpdateView.as_view(), name='blacklist'),
+    path('api/auth/', include('knox.urls')),
+    path('api/register/', RegisterAPI.as_view() , name="register"),
+    path('api/login/', LoginAPI.as_view(), name='login'),
+    path('api/logout/', knox_views.LogoutView.as_view(), name='logout'),
+
 ]
