@@ -1,13 +1,12 @@
 from rest_framework import status
 from rest_framework.response import Response
-from .serializers import CustomUserSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly  
+from rest_framework.permissions import IsAuthenticatedOrReadOnly , AllowAny , IsAuthenticated
 from rest_framework import viewsets
 from .models import CustomUser , Baby
-from .serializers import CustomUserSerializer , BabySerializer ,LoginSerializer
+from .serializers import CustomUserSerializer , BabySerializer ,LoginSerializer, UpdateUserSerializer,ChangePasswordSerializer
 from knox.models import AuthToken
 from rest_framework import generics
-
+from rest_framework.views import APIView
 
 #register
 class RegisterAPI(generics.GenericAPIView):
@@ -22,18 +21,7 @@ class RegisterAPI(generics.GenericAPIView):
         "token": AuthToken.objects.create(user)[1]
         })
         
-       
-     
-		
 
-def validate_email(email):
-	account = None
-	try:
-		account = CustomUser.objects.get(email=email)
-	except account.DoesNotExist:
-		return None
-	if account != None:
-		return email
 
 
 #login
@@ -50,6 +38,13 @@ class LoginAPI(generics.GenericAPIView):
         })
 
 
+class does_account_exist_view(APIView):
+    
+    def post(self, request):
+        email = request.data['email']
+        is_already_exists = CustomUser.objects.filter(email=email).exists()
+        res= {"response": is_already_exists}
+        return Response (res)
 
 
 class BabyViewset(viewsets.ModelViewSet):
@@ -60,21 +55,14 @@ class BabyViewset(viewsets.ModelViewSet):
 
 
 
-"""
-class CreateCustomUser(APIView):
-    permission_classes = [AllowAny]
+class ChangePasswordView(generics.UpdateAPIView):
 
-    def post(self, request, format='json'):
-        serializer = CustomUserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            if user:
-                json = serializer.data
-                token = AuthToken.objects.create(user)[1] 
-                return Response(json, token, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
-"""
+    queryset = CustomUser.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ChangePasswordSerializer
 
 
+class UpdateProfileView(generics.UpdateAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UpdateUserSerializer
