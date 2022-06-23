@@ -1,4 +1,3 @@
-from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly , AllowAny , IsAuthenticated
 from rest_framework import viewsets
@@ -7,6 +6,7 @@ from .serializers import CustomUserSerializer , BabySerializer ,LoginSerializer,
 from knox.models import AuthToken
 from rest_framework import generics
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 
 #register
 class RegisterAPI(generics.GenericAPIView):
@@ -49,8 +49,10 @@ class does_account_exist_view(APIView):
 
 class BabyViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly,]
+    parser_classes = (MultiPartParser, FormParser)
     queryset = Baby.objects.all()
     serializer_class = BabySerializer
+
 
 
 

@@ -54,13 +54,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
- 
+
+def upload_to(instance, filename):
+    return 'profile_imgs/{filename}'.format(filename=filename)
 
 
 
 class Baby(models.Model):
     name= models.CharField(max_length=255)
-    img = models.ImageField(upload_to='uploads/%Y/%m/%d/' , blank= True ,  max_length=255) 
+    img = models.ImageField(upload_to=upload_to, blank=True, null=True,  max_length=255) 
     birthdate= models.DateField()
     weight = models.FloatField()
     height=models.FloatField()
@@ -77,6 +79,10 @@ class Baby(models.Model):
     )
     relationship = models.CharField(max_length=1, choices=RELATIONSHIP_CHOICES)
     user= models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='baby_user')
+    
+    def __str__(self):
+        return self.name
+
 
 
 

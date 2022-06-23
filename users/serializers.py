@@ -44,6 +44,7 @@ class LoginSerializer(serializers.Serializer):
    
  
 class BabySerializer (serializers.ModelSerializer):
+    img = serializers.ImageField(required=False)
     class Meta:
         model = Baby
         fields = ( 'id','name', 'img', 'birthdate', 'height', 'weight', 'gender', 'relationship', 'user' )
