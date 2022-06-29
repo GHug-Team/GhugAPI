@@ -2,6 +2,8 @@ runtime.txt
 pipfile
 pipfile.lock
 ### Python template
+
+mediafiles/
 db.sqlite3
 .postgres
 # Byte-compiled / optimized / DLL files
@@ -75,6 +77,8 @@ celerybeat-schedule
 venv/
 ENV/
 env
+
+
 
 # Rope project settings
 .ropeproject

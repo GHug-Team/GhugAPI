@@ -2,7 +2,7 @@
 from rest_framework import routers
 from .views import  BabyViewset
 from django.urls import path , include
-from .views import RegisterAPI, LoginAPI , does_account_exist_view, ChangePasswordView, UpdateProfileView
+from .views import RegisterAPI, LoginAPI , does_account_exist_view, ChangePasswordView, UpdateProfileView , UserViewSet
 from knox import views as knox_views
 
 
@@ -11,9 +11,11 @@ from knox import views as knox_views
 router = routers.DefaultRouter()
 #router.register('users', UserViewset)
 router.register('api/babyinfo', BabyViewset)
+router.register('users/user_detail', UserViewSet, basename='CustomUser')
 
 
 app_name = 'users'
+
 
 urlpatterns = [
     path('api/auth/', include('knox.urls')),
@@ -23,4 +25,5 @@ urlpatterns = [
     path('check_if_account_exists/', does_account_exist_view.as_view() , name="check_if_account_exists"),
     path('change_password/<int:pk>/', ChangePasswordView.as_view(), name="change_password"),
     path('update_profile/<int:pk>/', UpdateProfileView.as_view(), name='update_profile'),
+    #path('logged_in_user/<int:pk>/', UserViewSet.as_view(), name="logged_in_user"),
 ]

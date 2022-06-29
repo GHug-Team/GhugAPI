@@ -31,7 +31,7 @@ SECRET_KEY = env("SECRET_KEY", "foo")
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = bool(env("DEBUG", default=False))
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['https://test-ghug.azurewebsites.net','test-ghug.azurewebsites.net', 'localhost', '127.0.0.1']
 #ALLOWED_HOSTS=['*']
 CSRF_TRUSTED_ORIGINS = ['https://test-ghug.azurewebsites.net']
@@ -96,7 +96,22 @@ WSGI_APPLICATION = 'GhugAPI.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+"""
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": "db",
+        "PORT": 5432,
+        "options": {"sslmode": "require"}
+    }
+}
+
+
+"""
 DATABASES = {
     'default':env.dj_db_url("DATABASE_URL")
 }

@@ -7,7 +7,7 @@ from knox.models import AuthToken
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from django.shortcuts import get_object_or_404
 #register
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = CustomUserSerializer
@@ -36,6 +36,22 @@ class LoginAPI(generics.GenericAPIView):
             "user": CustomUserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
         })
+"""
+class LoggedInUserView(APIView):
+    def get(self, request):
+        serializer = CustomUserSerializer(self.request.user)
+        return Response({"user": serializer.data, "token":AuthToken.objects.get(token=token)
+        
+        })
+"""
+class UserViewSet(viewsets.ViewSet):
+    
+    def retrieve(self, request, pk=None):
+        queryset = CustomUser.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+        serializer = CustomUserSerializer(user)
+        return Response({"user": serializer.data, "token":AuthToken.objects.create(user)[1]})
+    
 
 
 class does_account_exist_view(APIView):

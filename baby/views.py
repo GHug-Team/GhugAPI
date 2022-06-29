@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import permissions
-from .models import Album, Vaccine
-from .serializers import AlbumSerializer, VaccineSerializer
+from .models import Album, Vaccine , WatchStatus
+from .serializers import AlbumSerializer, VaccineSerializer , WatchStatusSerializer
 
 class AlbumViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
@@ -11,7 +11,12 @@ class AlbumViewset(viewsets.ModelViewSet):
 
     
 class VaccineViewset(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
+    permission_classes = [permissions.IsAuthenticated, ]
     queryset = Vaccine.objects.all()
     serializer_class = VaccineSerializer
 
+
+class StatusViewset(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = WatchStatus.objects.all()
+    serializer_class = WatchStatusSerializer
